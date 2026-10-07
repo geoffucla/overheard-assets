@@ -3,7 +3,7 @@ Usage: md_to_email_html.py edition.md "DATE LONG" out.html [ignored_banner_url]
 Env: BANNER_BASE overrides where banner images are loaded from (default https://bay.overheardnews.com/banners)."""
 import re, html, sys, os, math, datetime as _dt
 md = open(sys.argv[1]).read().split('\n'); date = sys.argv[2]
-DESC = os.environ.get('DESC', 'A rather dry take on Bay Area tech news')
+DESC = os.environ.get('DESC', 'Tech news and gossip, best served hot')
 SITE = 'https://bay.overheardnews.com'
 BB = os.environ.get('BANNER_BASE', SITE + '/banners')
 _m = re.search(r'(\d{4}-\d{2}-\d{2})', os.path.basename(sys.argv[1]))
@@ -63,7 +63,7 @@ def render_section(title, lines):
     out = []
     stand = ''
     if lines and lines[0].startswith('~ '):
-        stand = f'<p style="font:italic 13px/1.4 {SANS};color:{"#B9ABE0" if title.startswith("HUMAN") else MU};margin:0 0 14px">{inl(lines[0][2:])}</p>'; lines = lines[1:]
+        lines = lines[1:]  # column tagline lives in the banner, so drop it
     body = [l for l in lines if l.strip()]
     if title == 'THE LEAD':
         for i, l in enumerate(body):
