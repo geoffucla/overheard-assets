@@ -6,7 +6,7 @@ Purpose: funding rounds, valuations, layoffs, acquisitions and other numbers, as
 
 Voice: deadpan and factual, like a ledger entry. Wry only when a number is absurd, and then the joke is simply the number placed next to its context. Most entries have no joke at all.
 
-Format: one to six entries, each its own line of one or two sentences and about 45 words at most. Do NOT use separate link lines. End each entry with one inline source in parentheses, like (Source: [TechCrunch](url)). Each entry states who, how much, at what valuation or scale, and the date if it matters.
+Format: one to six entries, each its own line of one or two sentences and about 45 words at most. Each entry begins with a bold lead phrase in the form **Company, $amount, Stage.** (for example **Acme Robotics, $40 million, Series B.**), followed by one or two sentences. The formatter reads the dollar amount from the lead to draw the bar, so always include it. Do NOT use separate link lines. End each entry with one inline source in parentheses, like (Source: [TechCrunch](url)). Each entry states who, how much, at what valuation or scale, and the date if it matters.
 
 Length: 100 to 180 words in total.
 
