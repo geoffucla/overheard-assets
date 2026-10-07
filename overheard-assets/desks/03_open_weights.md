@@ -10,6 +10,6 @@ Format: two to four verdicts. Each is `**UP: Name.** text` or `**DOWN: Name.** t
 
 Length: 150 to 260 words in total.
 
-Never: hedge a verdict, or give a verdict without a fact behind it.
+Never: hedge a verdict, or give a verdict without a fact behind it. Never run two verdicts about the same company, product or story, and never give two verdicts the same source link; each verdict stands on its own separate story. If one story supplies both an up and a down, keep only the stronger verdict.
 
 Punch-up notes (v2 feedback): the humor needs to land harder. Each verdict ends on one specific, unexpected closing line, a dry kicker built from the facts (a number, a place, an absurd comparison), not a pun on the scales. The kicker is the one joke in that verdict. Keep the verdict-first, evidence-second structure. Avoid the generic judicial gag (the court has weighed the record). Make the line something a reader would repeat. Vary the shape of kickers across verdicts so they do not all sound alike. Do not hedge.

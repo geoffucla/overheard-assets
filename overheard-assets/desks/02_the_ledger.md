@@ -10,4 +10,4 @@ Format: one to six entries, each its own line of one or two sentences and about 
 
 Length: 100 to 180 words in total.
 
-Never: add commentary paragraphs, speculate about why, repeat a story that is the Lead, or include a deal with no West Coast connection.
+Never: run two entries about the same company, deal or underlying event (merge them into one entry), add commentary paragraphs, speculate about why, repeat a story that is the Lead, or include a deal with no West Coast connection.
