@@ -1,0 +1,6 @@
+# Signature phrases. One per line, in the form:   SECTION HEADING | phrase
+# A signature phrase is a deliberate, recurring device for that section. The checker enforces:
+#   1. the phrase MUST appear in that section every time the section runs,
+#   2. it is exempt from the repeated-phrase flags inside that section,
+#   3. it must NOT appear in any other section.
+# Only sections whose purpose earns a signature have one.
