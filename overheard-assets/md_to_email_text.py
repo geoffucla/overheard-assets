@@ -1,14 +1,14 @@
 import sys,re
 # usage: md_to_email_text.py md_path date_text out_txt
 md,date,out=sys.argv[1:4]
-desc="A rather dry take on Bay Area tech news | Designed for human consumption by Geoff Allen"
+desc="As heard by Always-On Listening. Designed for human consumption."
 import os
 m=re.search(r"(\d{4}-\d{2}-\d{2})",os.path.basename(md))
 WEB=("https://bay.overheardnews.com/editions/"+m.group(1)+"/") if m else "https://bay.overheardnews.com/"
 L=["View this on the web: "+WEB,"Past issues: https://bay.overheardnews.com/archive/","","OVERHEARD IN THE BAY",date.upper(),desc,"="*60,""]
 for ln in open(md).read().splitlines():
     s=ln.strip()
-    if not s or s.startswith('# ') or s.startswith(('Curated by','Designed for human consumption')): continue
+    if not s or s.startswith('# ') or s.startswith(('Curated by','Designed for human consumption','As heard by Always-On Listening')): continue
     if s.startswith('## '):
         L+=["",s[3:].upper(),"-"*len(s[3:])]; continue
     if s.startswith('~ '):

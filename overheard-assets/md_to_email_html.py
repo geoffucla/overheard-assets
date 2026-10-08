@@ -37,7 +37,7 @@ def para(l, size=15.5, color=INK, link='#1D4ED8', extra=''):
 secs = []; cur = None
 for l in md:
     l = l.rstrip()
-    if not l.strip() or l.startswith('# ') or l.startswith(('Curated by', 'Designed for human consumption')): continue
+    if not l.strip() or l.startswith('# ') or l.startswith(('Curated by', 'Designed for human consumption', 'As heard by Always-On Listening')): continue
     if l.startswith('## '):
         cur = [l[3:].strip(), []]; secs.append(cur); continue
     if cur is not None: cur[1].append(l)
@@ -167,7 +167,7 @@ page = f'''<table role="presentation" width="100%" cellpadding="0" cellspacing="
 <table role="presentation" width="640" cellpadding="0" cellspacing="0" bgcolor="{PAPER}" style="width:100%;max-width:640px;background:{PAPER}">
 <tr><td align="center" style="padding:10px 0 10px;font:11px {SANS};color:{MU}"><a href="{WEB}" style="color:{MU}">View this on the web</a> &nbsp;|&nbsp; <a href="{ARCH}" style="color:{MU}">Past issues</a></td></tr>
 <tr><td bgcolor="#0E131B" style="background:#0E131B"><img src="{BB}/00_masthead.png" alt="OVERHEARD IN THE BAY, {html.escape(DESC)}" width="640" style="display:block;width:100%;max-width:640px;height:auto;border:0;color:#fff;font:bold 22px {SERIF};text-align:center"></td></tr>
-<tr><td align="center" style="padding:14px 24px;border-bottom:3px solid {INK};background:{PAPER}"><span style="font:bold 11px {SANS};letter-spacing:3px;color:{MU}">{html.escape(date.upper())}</span><span style="font:italic 13px {SERIF};color:{RED}">&nbsp;&nbsp;|&nbsp;&nbsp;Designed for human consumption by Geoff Allen</span></td></tr>
+<tr><td align="center" style="padding:14px 24px 12px;border-bottom:3px solid {INK};background:{PAPER}"><span style="font:bold 11px {SANS};letter-spacing:3px;color:{MU}">{html.escape(date.upper())}</span><br><span style="font:italic 14px/1.6 {SERIF};color:{RED}">As heard by Always-On Listening. Designed for human consumption.</span></td></tr>
 {rows}
 <tr><td bgcolor="{INK}" align="center" style="background:{INK};color:#C9CED6;padding:18px 32px 22px;font:11px/1.55 {SANS}"><div style="font:italic 12px {SERIF};color:{PAPER};margin-bottom:8px">Informed, opinionated, occasionally wrong. Verify before repeating at dinner.</div>Written by Claude, an AI model made by Anthropic. All views expressed are strictly AI generated and are not the views of any human on, in, or around the loop, including the one who designed this for human consumption.<br><br>&copy; {YEAR} Humans Not Included Media, publisher of Overheard in the Bay. All rights reserved.<br>You are receiving this because you subscribed to Overheard in the Bay. <a href="{{{{{{RESEND_UNSUBSCRIBE_URL}}}}}}" style="color:#C9CED6">Unsubscribe</a></td></tr>
 </table></td></tr></table>'''
