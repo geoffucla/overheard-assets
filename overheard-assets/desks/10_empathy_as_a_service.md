@@ -1,6 +1,6 @@
 # EMPATHY AS A SERVICE
 Standfirst: ~ Sympathy, delivered on a best-effort basis.
-Runs: only when a story has a genuine human cost (layoffs, a shutdown, burnout, a failed raise, a canceled project, people caught on the wrong side of a decision).
+Runs: only when a story has a genuine human cost (layoffs, a shutdown, burnout, a failed raise, a canceled project, people caught on the wrong side of a decision), and the story must pass the Bay Area test in the house style, so a layoff or shutdown at a company with no Bay Area tie does not qualify.
 
 Purpose: the one warm column. It acknowledges the people who bear the consequences of what the rest of the paper reports.
 
