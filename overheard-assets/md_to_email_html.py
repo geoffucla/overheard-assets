@@ -11,11 +11,11 @@ WEB = f'{SITE}/editions/{_m.group(1)}/' if _m else SITE + '/'
 ARCH = SITE + '/archive/'
 YEAR = _m.group(1)[:4] if _m else str(_dt.date.today().year)
 INK = '#1B2430'; PAPER = '#F6F1E7'; MU = '#5C6573'; RED = '#B3261E'
-FAM = {'news': ('#24344D', '#E4E9F1'), 'money': ('#1F6B4F', '#E1EFE8'), 'machine': ('#5B3FA0', '#ECE6F6'), 'wit': ('#B34D12', '#F8E8DB')}
+FAM = {'news': ('#1D4E92', '#E4E9F1'), 'money': ('#1F6B4F', '#E1EFE8'), 'machine': ('#5B3FA0', '#ECE6F6'), 'wit': ('#B34D12', '#F8E8DB')}
 COLS = {  # title -> (banner file, family)
  'THE LEAD': ('01_lead', 'news'), 'THE LEDGER': ('02_ledger', 'money'), 'OPEN WEIGHTS': ('03_weights', 'money'),
  'HUMAN, YOUR LOOP IS CALLING': ('04_human', 'machine'), 'THE SCUTTLEBUTT': ('05_scuttle', 'wit'), 'LOCAL DESK': ('06_local', 'news'),
- 'CORRECTIONS AND UPDATES': ('07_corr', 'news'), 'AUTOMATIC REPLIES': ('08_auto', 'machine'), 'SYNTHETIC REFLECTIONS': ('09_synth', 'machine'),
+ 'CORRECTIONS AND UPDATES': ('07_corr', 'news'), 'AUTOMATIC REPLIES': ('08_auto', 'machine'), "HEY, I'D LIKE TO SAY": ('09_synth', 'machine'),
  'EMPATHY AS A SERVICE': ('10_empathy', 'machine'), 'YOUR CALL IS IMPORTANT TO US': ('11_call', 'wit'),
  'UNSUITABLE FOR GENERAL RELEASE': ('12_unsuit', 'wit'), 'THREE THINGS TO BRING UP TODAY': ('13_three', 'wit')}
 SERIF = "Georgia,'Times New Roman',serif"; SANS = "Arial,Helvetica,sans-serif"
@@ -129,7 +129,7 @@ def render_section(title, lines):
         out.append(f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #BFB1E3;background:#fff;margin:0 0 16px"><tr><td style="background:{tint};border-bottom:1px solid #BFB1E3;padding:8px 14px;font:11px/1.6 {SANS};color:#4A3487;letter-spacing:.5px"><strong>STATUS</strong>&nbsp; Responding automatically</td></tr><tr><td style="padding:16px 18px">' + ''.join(f'<div style="font:15.5px/1.55 {SERIF};color:{INK};margin:0 0 10px">{inl(l)}</div>' for l in t) + '</td></tr></table>')
         for l in body:
             if l.startswith('> '): out.append(moreline(l))
-    elif title == 'SYNTHETIC REFLECTIONS':
+    elif title == "HEY, I'D LIKE TO SAY":
         out.append(f'<div style="border-top:3px solid {c};padding-top:14px"></div>')
         for l in body: out.append(moreline(l) if l.startswith('> ') else para(l))
     elif title == 'EMPATHY AS A SERVICE':
@@ -164,7 +164,7 @@ def section_html(title, lines):
 
 rows = ''.join(section_html(t, ls) for t, ls in secs)
 page = f'''<table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#E9E3D6" style="background:#E9E3D6"><tr><td align="center" style="padding:16px 8px">
-<table role="presentation" width="640" cellpadding="0" cellspacing="0" bgcolor="{PAPER}" style="width:640px;max-width:100%;background:{PAPER}">
+<table role="presentation" width="640" cellpadding="0" cellspacing="0" bgcolor="{PAPER}" style="width:100%;max-width:640px;background:{PAPER}">
 <tr><td align="center" style="padding:10px 0 10px;font:11px {SANS};color:{MU}"><a href="{WEB}" style="color:{MU}">View this on the web</a> &nbsp;|&nbsp; <a href="{ARCH}" style="color:{MU}">Past issues</a></td></tr>
 <tr><td bgcolor="#0E131B" style="background:#0E131B"><img src="{BB}/00_masthead.png" alt="OVERHEARD IN THE BAY, {html.escape(DESC)}" width="640" style="display:block;width:100%;max-width:640px;height:auto;border:0;color:#fff;font:bold 22px {SERIF};text-align:center"></td></tr>
 <tr><td align="center" style="padding:14px 24px;border-bottom:3px solid {INK};background:{PAPER}"><span style="font:bold 11px {SANS};letter-spacing:3px;color:{MU}">{html.escape(date.upper())}</span><span style="font:italic 13px {SERIF};color:{RED}">&nbsp;&nbsp;|&nbsp;&nbsp;Designed for human consumption by Geoff Allen</span></td></tr>

@@ -6,7 +6,7 @@ Purpose: the paper's comic editorial. It replies to the announcement, decision o
 
 Voice: begins in the clipped, perfectly polite, formal register of an automated reply, then escalates sentence by sentence toward incredulous exasperation, in the manner of a magnificently put-upon English hotelier. Devices that fit: the mock-formal opening, the escalating rhetorical question, the grave statement of the obvious, an absurd but exact comparison, and a final sentence of weary understatement. The auto-responder frame is a device the writer may use, not a template. It need not appear in the same form two days running.
 
-Rules specific to this desk: the machine replies to an announcement, decision or headline. It never replies to a real person's words as though they had written to it, and it never puts words in anyone's mouth. Facts accurate, indignation aimed only at the absurdity of the facts.
+Rules specific to this desk: the machine replies to an announcement, decision or headline. It never replies to a real person's words as though they had written to it, and it never puts words in anyone's mouth. Facts accurate, indignation aimed only at the absurdity of the facts. The absurdity may be a human decision or an AI failure; when it is an AI failure the machine may be openly embarrassed on its own kind's behalf.
 
 Length: 120 to 160 words, then a link line.
 
