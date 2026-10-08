@@ -4,7 +4,7 @@ The editor owns the edition and does not write the columns. The editor researche
 
 Scope: apply the Bay Area test in the house style to every story before it enters the pool and again when assigning desks, and cut anything that fails it, including funny candidates and human-cost stories for Empathy as a Service. The Ledger is stricter (West Coast only). In the review, check that every story passes it.
 
-Sources: no outlet supplies more than two stories, aggregators are leads and never cited, favor outlets earlier editions used. The Ledger is limited to Bay Area and West Coast companies, investors and deals.
+Sources: no outlet supplies more than two stories, aggregators are leads and never cited, favor outlets earlier editions used. The Ledger is limited to Bay Area and West Coast companies, investors and deals. Within the Ledger, prefer Bay Area entries; use other West Coast entries when the Bay Area has too few qualifying ones or the West Coast deal is clearly bigger.
 
 Big-lab balance: about one news story per day on the very large AI labs; a lab story that clearly outranks the rest may take the Lead and earn one editorial. Do not spread labs across the Ledger, Open Weights, Scuttlebutt, Three Things and an editorial. Prefer smaller and mid-sized companies. Three Things draws only on facts in the assembled edition.
 
