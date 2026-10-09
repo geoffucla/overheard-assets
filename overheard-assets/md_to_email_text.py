@@ -1,7 +1,7 @@
 import sys,re
 # usage: md_to_email_text.py md_path date_text out_txt
 md,date,out=sys.argv[1:4]
-desc="Designed by hand, assembled by machine."
+desc="Your secret to being clued in and quotable before your first meeting."
 import os
 m=re.search(r"(\d{4}-\d{2}-\d{2})",os.path.basename(md))
 WEB=("https://bay.termsundisclosed.com/editions/"+m.group(1)+"/") if m else "https://bay.termsundisclosed.com/"
@@ -24,5 +24,5 @@ for ln in open(md).read().splitlines():
     else:
         L.append(s)
     L.append("")
-L+=["","Informed, opinionated, occasionally wrong. Verify before repeating at dinner.","","Written by Claude, an AI model made by Anthropic. All views expressed are strictly AI generated and are not the views of any human on, in, or around the loop, including the one who designed this by hand.","","(c) "+(m.group(1)[:4] if m else "2026")+" Humans Not Included Media, publisher of Terms Undisclosed: Bay Blend. All rights reserved.","You are receiving this because you subscribed to Terms Undisclosed: Bay Blend.","Unsubscribe: {{{RESEND_UNSUBSCRIBE_URL}}}"]
+L+=["","Informed, opinionated, occasionally wrong. Verify before repeating at dinner.","Designed by hand, assembled by machine.","","Written by Claude, an AI model made by Anthropic. All views expressed are strictly AI generated and are not the views of any human on, in, or around the loop, including the one who designed this by hand.","","(c) "+(m.group(1)[:4] if m else "2026")+" Humans Not Included Media, publisher of Terms Undisclosed: Bay Blend. All rights reserved.","You are receiving this because you subscribed to Terms Undisclosed: Bay Blend.","Unsubscribe: {{{RESEND_UNSUBSCRIBE_URL}}}"]
 open(out,'w').write("\n".join(L))

@@ -6,7 +6,7 @@ md = open(sys.argv[1]).read().split('\n'); date = sys.argv[2]
 DESC = os.environ.get('DESC', 'News, deals, rumors and unsolicited opinions')
 SITE = 'https://bay.termsundisclosed.com'
 BB = os.environ.get('BANNER_BASE', SITE + '/banners')
-VER = '?v=2026100901'  # bump whenever any banner image changes: mail clients (Gmail) cache images by URL
+VER = '?v=2026100904'  # bump whenever any banner image changes: mail clients (Gmail) cache images by URL
 _m = re.search(r'(\d{4}-\d{2}-\d{2})', os.path.basename(sys.argv[1]))
 WEB = f'{SITE}/editions/{_m.group(1)}/' if _m else SITE + '/'
 ARCH = SITE + '/archive/'
@@ -163,13 +163,33 @@ def section_html(title, lines):
     bg = '#2A1F4A' if dark else PAPER
     return banner + f'<tr><td bgcolor="{bg}" style="background:{bg};padding:20px 28px 8px">{render_section(title, lines)}</td></tr>'
 
+_dm = re.match(r'\s*(\w+),\s*(\w+)\s+(\d+),\s*(\d{4})', date)
+TAGALT = 'Your secret to being clued in and quotable before your first meeting.'
+LABEL = (f'<div style="display:inline-block;vertical-align:middle;width:100%;max-width:420px;margin:6px 0;font-size:0;line-height:0">'
+         f'<img src="{BB}/00_tagline.png{VER}" alt="{TAGALT}" width="420" style="display:block;width:100%;max-width:420px;height:auto;border:0;color:{INK};font:italic 15px/1.4 {SERIF};text-align:center"></div>')
+if _dm:
+    _wd, _mo, _d, _y = _dm.groups()
+    TILE = (f'<div style="display:inline-block;vertical-align:middle;margin:6px 8px;font-size:14px;line-height:normal">'
+            f'<table role="presentation" width="108" cellpadding="0" cellspacing="0" style="width:108px;border:1px solid #8A6238;border-radius:8px;border-collapse:separate;overflow:hidden;box-shadow:0 6px 10px rgba(60,40,20,.32)">'
+            f'<tr><td align="center" bgcolor="{RED}" style="background:{RED};color:#ffffff;font:bold 11px {SANS};letter-spacing:3px;padding:6px 0">{html.escape(_mo.upper())}</td></tr>'
+            f'<tr><td align="center" bgcolor="#FBF1DA" style="background:#FBF1DA;padding:6px 0 8px"><div style="font:bold 44px/1 {SERIF};color:{INK}">{int(_d)}</div>'
+            f'<div style="font:bold 10px {SANS};letter-spacing:3px;color:{MU};padding-top:4px">{html.escape(_wd.upper())}</div>'
+            f'<div style="font:10px {SANS};letter-spacing:2px;color:{MU};padding-top:2px">{_y}</div></td></tr></table></div>')
+else:  # unexpected date format: plain text fallback
+    TILE = f'<div style="display:block;text-align:center;margin:6px 0;font:bold 11px {SANS};letter-spacing:3px;color:{MU}">{html.escape(date.upper())}</div>'
+# Hybrid layout, no media queries needed: tile and label sit side by side when the width allows and stack on narrow screens. MSO tables keep Outlook desktop side by side.
+TOP = (f'<tr><td align="center" bgcolor="{PAPER}" style="background:{PAPER};padding:10px 8px 24px;font-size:0;line-height:0">'
+       f'<!--[if mso]><table role="presentation" align="center" cellpadding="0" cellspacing="0"><tr><td valign="middle"><![endif]-->'
+       + TILE + '<!--[if mso]></td><td valign="middle"><![endif]-->' + LABEL +
+       '<!--[if mso]></td></tr></table><![endif]--></td></tr>')
+
 rows = ''.join(section_html(t, ls) for t, ls in secs)
 page = f'''<table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#E9E3D6" style="background:#E9E3D6"><tr><td align="center" style="padding:16px 8px">
 <table role="presentation" width="640" cellpadding="0" cellspacing="0" bgcolor="{PAPER}" style="width:100%;max-width:640px;background:{PAPER}">
 <tr><td align="center" style="padding:10px 0 10px;font:11px {SANS};color:{MU}"><a href="{WEB}" style="color:{MU}">View this on the web</a> &nbsp;|&nbsp; <a href="{ARCH}" style="color:{MU}">Past issues</a></td></tr>
 <tr><td bgcolor="#0E131B" style="background:#0E131B"><img src="{BB}/00_masthead.png{VER}" alt="TERMS UNDISCLOSED: BAY BLEND. {html.escape(DESC)}" width="640" style="display:block;width:100%;max-width:640px;height:auto;border:0;color:#fff;font:bold 22px {SERIF};text-align:center"></td></tr>
-<tr><td align="center" style="padding:14px 24px 12px;border-bottom:3px solid {INK};background:{PAPER}"><span style="font:bold 11px {SANS};letter-spacing:3px;color:{MU}">{html.escape(date.upper())}</span><br><span style="font:italic 14px/1.6 {SERIF};color:{RED}">Designed by hand, assembled by machine.</span></td></tr>
+{TOP}
 {rows}
-<tr><td bgcolor="{INK}" align="center" style="background:{INK};color:#C9CED6;padding:18px 32px 22px;font:11px/1.55 {SANS}"><div style="font:italic 12px {SERIF};color:{PAPER};margin-bottom:8px">Informed, opinionated, occasionally wrong. Verify before repeating at dinner.</div>Written by Claude, an AI model made by Anthropic. All views expressed are strictly AI generated and are not the views of any human on, in, or around the loop, including the one who designed this by hand.<br><br>&copy; {YEAR} Humans Not Included Media, publisher of Terms Undisclosed: Bay Blend. All rights reserved.<br>You are receiving this because you subscribed to Terms Undisclosed: Bay Blend. <a href="{{{{{{RESEND_UNSUBSCRIBE_URL}}}}}}" style="color:#C9CED6">Unsubscribe</a></td></tr>
+<tr><td bgcolor="{INK}" align="center" style="background:{INK};color:#C9CED6;padding:18px 32px 22px;font:11px/1.55 {SANS}"><div style="font:italic 12px {SERIF};color:{PAPER};margin-bottom:8px">Informed, opinionated, occasionally wrong. Verify before repeating at dinner.</div><div style="font:italic 12px {SERIF};color:#C9CED6;margin-bottom:8px">Designed by hand, assembled by machine.</div>Written by Claude, an AI model made by Anthropic. All views expressed are strictly AI generated and are not the views of any human on, in, or around the loop, including the one who designed this by hand.<br><br>&copy; {YEAR} Humans Not Included Media, publisher of Terms Undisclosed: Bay Blend. All rights reserved.<br>You are receiving this because you subscribed to Terms Undisclosed: Bay Blend. <a href="{{{{{{RESEND_UNSUBSCRIBE_URL}}}}}}" style="color:#C9CED6">Unsubscribe</a></td></tr>
 </table></td></tr></table>'''
 open(sys.argv[3], 'w').write(page)
