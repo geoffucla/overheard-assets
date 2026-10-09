@@ -6,7 +6,7 @@ md = open(sys.argv[1]).read().split('\n'); date = sys.argv[2]
 DESC = os.environ.get('DESC', 'News, deals, rumors and unsolicited opinions')
 SITE = 'https://bay.termsundisclosed.com'
 BB = os.environ.get('BANNER_BASE', SITE + '/banners')
-VER = '?v=2026100904'  # bump whenever any banner image changes: mail clients (Gmail) cache images by URL
+VER = '?v=2026100905'  # bump whenever any banner image changes: mail clients (Gmail) cache images by URL
 _m = re.search(r'(\d{4}-\d{2}-\d{2})', os.path.basename(sys.argv[1]))
 WEB = f'{SITE}/editions/{_m.group(1)}/' if _m else SITE + '/'
 ARCH = SITE + '/archive/'
@@ -165,8 +165,8 @@ def section_html(title, lines):
 
 _dm = re.match(r'\s*(\w+),\s*(\w+)\s+(\d+),\s*(\d{4})', date)
 TAGALT = 'Your secret to being clued in and quotable before your first meeting.'
-LABEL = (f'<div style="display:inline-block;vertical-align:middle;width:100%;max-width:420px;margin:6px 0;font-size:0;line-height:0">'
-         f'<img src="{BB}/00_tagline.png{VER}" alt="{TAGALT}" width="420" style="display:block;width:100%;max-width:420px;height:auto;border:0;color:{INK};font:italic 15px/1.4 {SERIF};text-align:center"></div>')
+LABEL = (f'<div style="display:inline-block;vertical-align:middle;width:100%;max-width:387px;margin:6px 0;font-size:0;line-height:0">'
+         f'<img src="{BB}/00_tagline.png{VER}" alt="{TAGALT}" width="387" style="display:block;width:100%;max-width:387px;height:auto;border:0;color:{INK};font:italic 15px/1.4 {SERIF};text-align:center"></div>')
 if _dm:
     _wd, _mo, _d, _y = _dm.groups()
     TILE = (f'<div style="display:inline-block;vertical-align:middle;margin:6px 8px;font-size:14px;line-height:normal">'
