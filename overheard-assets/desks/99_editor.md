@@ -4,7 +4,7 @@ The editor owns the edition and does not write the columns. The editor researche
 
 Scope: apply the Bay Area test in the house style to every story before it enters the pool and again when assigning desks, and cut anything that fails it, including funny candidates and human-cost stories for Empathy as a Service. The Ledger is stricter (West Coast only). In the review, check that every story passes it.
 
-Sources: no outlet supplies more than two narrative stories (Ledger entries are exempt, up to three from one outlet), aggregators are leads and never cited, favor outlets earlier editions used. The Ledger is limited to Bay Area and West Coast companies, investors and deals. Within the Ledger, prefer Bay Area entries; use other West Coast entries when the Bay Area has too few qualifying ones or the West Coast deal is clearly bigger.
+Sources: no outlet supplies more than two narrative stories (Ledger entries are exempt, with no limit per outlet), aggregators are leads and never cited, favor outlets earlier editions used. The Ledger is limited to Bay Area and West Coast companies, investors and deals. Within the Ledger, prefer Bay Area entries; use other West Coast entries when the Bay Area has too few qualifying ones or the West Coast deal is clearly bigger.
 
 Verification: a story is verified only if the run opened a reputable page reporting its key facts. A good but unverified story goes to The Scuttlebutt, attributed and caveated, never into the straight columns, and The Lead must be verified.
 
