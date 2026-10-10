@@ -6,7 +6,7 @@ md = open(sys.argv[1]).read().split('\n'); date = sys.argv[2]
 DESC = os.environ.get('DESC', 'News, deals, rumors and unsolicited opinions')
 SITE = 'https://bay.termsundisclosed.com'
 BB = os.environ.get('BANNER_BASE', SITE + '/banners')
-VER = '?v=2026101002'  # bump whenever any banner image changes: mail clients (Gmail) cache images by URL
+VER = '?v=2026101003'  # bump whenever any banner image changes: mail clients (Gmail) cache images by URL
 _m = re.search(r'(\d{4}-\d{2}-\d{2})', os.path.basename(sys.argv[1]))
 WEB = f'{SITE}/editions/{_m.group(1)}/' if _m else SITE + '/'
 ARCH = SITE + '/archive/'
@@ -157,9 +157,9 @@ def section_html(title, lines):
     if not info:
         return f'<tr><td style="padding:24px 28px 0;font:bold 12px {SANS};letter-spacing:2px;color:{RED}">{html.escape(title)}</td></tr><tr><td bgcolor="{PAPER}" style="background:{PAPER};padding:20px 28px 8px">{render_section(title, lines)}</td></tr>'
     bg = '#2A1F4A' if dark else '#FCFAF5'
-    head = (f'<tr><td bgcolor="{PAPER}" style="background:{PAPER};padding:26px 20px 0;font-size:0;line-height:0">'
+    head = (f'<tr><td bgcolor="{DESK}" style="background:{DESK};padding:22px 20px 0;font-size:0;line-height:0">'
             f'<img src="{BB}/{info[0]}.png{VER}" alt="{html.escape(title)}" width="600" style="display:block;width:100%;max-width:600px;height:auto;border:0;color:{c};font:bold 16px {SANS};text-align:center"></td></tr>')
-    body = (f'<tr><td bgcolor="{PAPER}" style="background:{PAPER};padding:0 20px 0">'
+    body = (f'<tr><td bgcolor="{DESK}" style="background:{DESK};padding:0 20px 0">'
             f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-left:7px solid {c};border-right:7px solid {c};background:{bg}"><tr><td bgcolor="{bg}" style="background:{bg};padding:20px 20px 8px">{render_section(title, lines)}</td></tr></table>'
             f'<img src="{BB}/foot_{info[0]}.png{VER}" alt="" width="600" style="display:block;width:100%;max-width:600px;height:auto;border:0"></td></tr>')
     return head + body
@@ -179,18 +179,29 @@ if _dm:
 else:  # unexpected date format: plain text fallback
     TILE = f'<div style="display:block;text-align:center;margin:6px 0;font:bold 11px {SANS};letter-spacing:3px;color:{MU}">{html.escape(date.upper())}</div>'
 # Hybrid layout, no media queries needed: tile and label sit side by side when the width allows and stack on narrow screens. MSO tables keep Outlook desktop side by side.
-TOP = (f'<tr><td align="center" bgcolor="{PAPER}" style="background:{PAPER};padding:10px 8px 24px;font-size:0;line-height:0">'
-       f'<!--[if mso]><table role="presentation" align="center" cellpadding="0" cellspacing="0"><tr><td valign="middle"><![endif]-->'
-       + TILE + '<!--[if mso]></td><td valign="middle"><![endif]-->' + LABEL +
-       '<!--[if mso]></td></tr></table><![endif]--></td></tr>')
+DESK = "#4B505C"
+MONO = "Menlo,Consolas,'Courier New',monospace"
+_dd = html.escape(date)
+def _term(lines_html, pad="6px 20px 8px"):
+    return (f'<tr><td bgcolor="{DESK}" style="background:{DESK};padding:{pad};white-space:nowrap;font:13px/1.75 {MONO};color:#F2F5FA">{lines_html}</td></tr>')
+LC = "#D5DEEE"
+LINKS = (f'<tr><td align="center" bgcolor="{DESK}" style="background:{DESK};padding:18px 8px 10px;font:bold 10px {SANS};letter-spacing:1.5px;color:{LC};white-space:nowrap">'
+         f'<a href="{WEB}" style="color:{LC};text-decoration:none">VIEW ON THE WEB</a> &nbsp;&middot;&nbsp; <a href="{ARCH}" style="color:{LC};text-decoration:none">ARCHIVE</a> &nbsp;&middot;&nbsp; <a href="{SITE}/about/" style="color:{LC};text-decoration:none">ABOUT</a> &nbsp;&middot;&nbsp; <a href="{SITE}/subscribe/" style="color:{LC};text-decoration:none">SUBSCRIBE</a></td></tr>')
+_dshort = f"{_wd} {_mo[:3]} {int(_d)} {_y}" if _dm else _dd
+TOP = LINKS + _term(
+    f'<span style="color:#8CF0B0">&gt;</span> <span style="color:#8FDCFF">edition</span>.date <span style="color:#B6C0D4">=</span> <span style="color:#E8CBA6">&quot;{_dshort}&quot;</span>;<br>'
+    f'<span style="color:#8CF0B0">&gt;</span> <span style="color:#E8CBA6">coffee: loaded. now reading:</span><span style="color:#fff">_</span>', "10px 20px 0")
+END = _term(
+    f'<span style="color:#8CF0B0">&gt;</span> <span style="color:#E8CBA6">coffee: empty. edition complete.</span><br>'
+    f'<span style="color:#8CF0B0">&gt;</span> exit 0<span style="color:#fff">_</span>', "22px 20px 26px")
 
 rows = ''.join(section_html(t, ls) for t, ls in secs)
 page = f'''<table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#E9E3D6" style="background:#E9E3D6"><tr><td align="center" style="padding:16px 8px">
 <table role="presentation" width="640" cellpadding="0" cellspacing="0" bgcolor="{PAPER}" style="width:100%;max-width:640px;background:{PAPER}">
-<tr><td align="center" style="padding:10px 0 10px;font:11px {SANS};color:{MU}"><a href="{WEB}" style="color:{MU}">View this on the web</a> &nbsp;|&nbsp; <a href="{ARCH}" style="color:{MU}">Past issues</a></td></tr>
-<tr><td bgcolor="{PAPER}" style="background:{PAPER};font-size:0;line-height:0"><img src="{BB}/00_masthead.png{VER}" alt="TERMS UNDISCLOSED: BAY BLEND. {html.escape(DESC)}" width="640" style="display:block;width:100%;max-width:640px;height:auto;border:0;color:#fff;font:bold 22px {SERIF};text-align:center"></td></tr>
+<tr><td bgcolor="#4B505C" style="background:#4B505C;font-size:0;line-height:0"><img src="{BB}/00_masthead.png{VER}" alt="TERMS UNDISCLOSED: BAY BLEND. {html.escape(DESC)}" width="640" style="display:block;width:100%;max-width:640px;height:auto;border:0;color:#fff;font:bold 22px {SERIF};text-align:center"></td></tr>
 {TOP}
 {rows}
+{END}
 <tr><td bgcolor="{INK}" align="center" style="background:{INK};color:#C9CED6;padding:18px 32px 22px;font:11px/1.55 {SANS}"><div style="font:italic 12px {SERIF};color:{PAPER};margin-bottom:8px">Informed, opinionated, occasionally wrong. Verify before repeating at dinner.</div><div style="font:italic 12px {SERIF};color:#C9CED6;margin-bottom:8px">Designed by hand, written by Claude.</div>All views expressed are strictly AI generated and are not those of any human.<br><br>&copy; {YEAR} Humans Not Included Media, publisher of Terms Undisclosed: Bay Blend. All rights reserved.<br>You are receiving this because you subscribed to Terms Undisclosed: Bay Blend. <a href="{{{{{{RESEND_UNSUBSCRIBE_URL}}}}}}" style="color:#C9CED6">Unsubscribe</a></td></tr>
 </table></td></tr></table>'''
 open(sys.argv[3], 'w').write(page)
