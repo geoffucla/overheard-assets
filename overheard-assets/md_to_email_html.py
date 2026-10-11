@@ -1,10 +1,11 @@
 """Terms Undisclosed: edition markdown -> email-safe HTML (design v3, banners per column).
 Usage: md_to_email_html.py edition.md "DATE LONG" out.html [ignored_banner_url]
-Env: BANNER_BASE overrides where banner images are loaded from (default https://bay.termsundisclosed.com/banners)."""
-import re, html, sys, os, math, datetime as _dt
+Env: BANNER_BASE overrides where banner images are loaded from (default: the edition's site + /banners). EDITION env selects the edition from regions/editions.json (default bay)."""
+import re, html, sys, os, math, json, datetime as _dt
+_ED = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'regions', 'editions.json')))[os.environ.get('EDITION', 'bay')]
 md = open(sys.argv[1]).read().split('\n'); date = sys.argv[2]
 DESC = os.environ.get('DESC', 'News, deals, rumors and unsolicited opinions')
-SITE = 'https://bay.termsundisclosed.com'
+SITE = _ED['site']
 BB = os.environ.get('BANNER_BASE', SITE + '/banners')
 VER = '?v=2026101003'  # bump whenever any banner image changes: mail clients (Gmail) cache images by URL
 _m = re.search(r'(\d{4}-\d{2}-\d{2})', os.path.basename(sys.argv[1]))
@@ -18,7 +19,7 @@ COLS = {  # title -> (banner file, family)
  'HUMAN, YOUR LOOP IS CALLING': ('04_human', 'machine'), 'THE SCUTTLEBUTT': ('05_scuttle', 'wit'), 'LOCAL DESK': ('06_local', 'news'),
  'CORRECTIONS AND UPDATES': ('07_corr', 'news'), 'AUTOMATIC REPLIES': ('08_auto', 'machine'), "HEY, I'D LIKE TO SAY": ('09_synth', 'machine'),
  'EMPATHY AS A SERVICE': ('10_empathy', 'machine'), 'YOUR CALL IS IMPORTANT TO US': ('11_call', 'wit'),
- 'UNSUITABLE FOR GENERAL RELEASE': ('12_unsuit', 'wit'), 'THREE THINGS TO BRING UP TODAY': ('13_three', 'wit')}
+ 'UNSUITABLE FOR GENERAL RELEASE': ('12_unsuit', 'wit'), 'THREE THINGS TO BRING UP TODAY': ('13_three', 'wit'), 'TEXAS TEA': ('14_tea', 'news')}
 SERIF = "Georgia,'Times New Roman',serif"; SANS = "Arial,Helvetica,sans-serif"
 
 def inl(t, link='#1D4ED8'):
@@ -198,10 +199,10 @@ END = _term(
 rows = ''.join(section_html(t, ls) for t, ls in secs)
 page = f'''<table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#E9E3D6" style="background:#E9E3D6"><tr><td align="center" style="padding:16px 8px">
 <table role="presentation" width="640" cellpadding="0" cellspacing="0" bgcolor="{PAPER}" style="width:100%;max-width:640px;background:{PAPER}">
-<tr><td bgcolor="#4B505C" style="background:#4B505C;font-size:0;line-height:0"><img src="{BB}/00_masthead.png{VER}" alt="TERMS UNDISCLOSED: BAY BLEND. {html.escape(DESC)}" width="640" style="display:block;width:100%;max-width:640px;height:auto;border:0;color:#fff;font:bold 22px {SERIF};text-align:center"></td></tr>
+<tr><td bgcolor="#4B505C" style="background:#4B505C;font-size:0;line-height:0"><img src="{BB}/00_masthead.png{VER}" alt="{html.escape(_ED['name'].upper())}. {html.escape(DESC)}" width="640" style="display:block;width:100%;max-width:640px;height:auto;border:0;color:#fff;font:bold 22px {SERIF};text-align:center"></td></tr>
 {TOP}
 {rows}
 {END}
-<tr><td bgcolor="{INK}" align="center" style="background:{INK};color:#C9CED6;padding:18px 32px 22px;font:11px/1.55 {SANS}"><div style="font:italic 12px {SERIF};color:{PAPER};margin-bottom:8px">Informed, opinionated, occasionally wrong. Verify before repeating at dinner.</div><div style="font:italic 12px {SERIF};color:#C9CED6;margin-bottom:8px">Designed by hand, written by Claude.</div>All views expressed are strictly AI generated and are not those of any human.<br><br>&copy; {YEAR} Humans Not Included Media, publisher of Terms Undisclosed: Bay Blend. All rights reserved.<br>You are receiving this because you subscribed to Terms Undisclosed: Bay Blend. <a href="{{{{{{RESEND_UNSUBSCRIBE_URL}}}}}}" style="color:#C9CED6">Unsubscribe</a></td></tr>
+<tr><td bgcolor="{INK}" align="center" style="background:{INK};color:#C9CED6;padding:18px 32px 22px;font:11px/1.55 {SANS}"><div style="font:italic 12px {SERIF};color:{PAPER};margin-bottom:8px">Informed, opinionated, occasionally wrong. Verify before repeating at dinner.</div><div style="font:italic 12px {SERIF};color:#C9CED6;margin-bottom:8px">Designed by hand, written by Claude.</div>All views expressed are strictly AI generated and are not those of any human.<br><br>&copy; {YEAR} Humans Not Included Media, publisher of {html.escape(_ED['name'])}. All rights reserved.<br>You are receiving this because you subscribed to {html.escape(_ED['name'])}. <a href="{{{{{{RESEND_UNSUBSCRIBE_URL}}}}}}" style="color:#C9CED6">Unsubscribe</a></td></tr>
 </table></td></tr></table>'''
 open(sys.argv[3], 'w').write(page)
