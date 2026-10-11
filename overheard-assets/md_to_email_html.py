@@ -78,15 +78,15 @@ def render_section(title, lines):
         ents = [l for l in body if not l.startswith(('> ', '~ '))]
         amts = [amount(l) for l in ents]
         top = max([a for a in amts if a] + [5e8]); scale = next(s for s in SCALES if s >= top)
-        out.append(f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:{tint};border-top:3px solid {c};margin:0 0 18px"><tr><td style="padding:8px 14px;border-bottom:1px solid #B9D7C8;font:bold 10px {SANS};letter-spacing:1.5px;color:{c}">WHO</td><td align="right" style="padding:8px 14px;border-bottom:1px solid #B9D7C8;font:bold 10px {SANS};letter-spacing:1.5px;color:{c}">AMOUNT</td></tr>')
+        out.append(f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:{tint};border-top:3px solid {c};margin:0 0 18px">')
         for l, a in zip(ents, amts):
-            right = ''
+            meter = ''
             if a:
                 pct = max(4, min(100, round(a / scale * 100)))
-                right = (f'<div style="font:bold 28px/1 {SERIF};color:{c}">{money(a)}</div>'
-                         f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:8px"><tr><td width="{pct}%" height="8" bgcolor="{c}" style="font-size:0;line-height:0;height:8px">&nbsp;</td><td height="8" bgcolor="#C6DDD1" style="font-size:0;line-height:0;height:8px">&nbsp;</td></tr></table>'
+                meter = (f'<div style="font:bold 26px/1 {SERIF};color:{c};margin-top:12px">{money(a)}</div>'
+                         f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:8px;max-width:300px"><tr><td width="{pct}%" height="8" bgcolor="{c}" style="font-size:0;line-height:0;height:8px">&nbsp;</td><td height="8" bgcolor="#C6DDD1" style="font-size:0;line-height:0;height:8px">&nbsp;</td></tr></table>'
                          f'<div style="font:10px {SANS};color:#4C7A68;margin-top:3px">of {money(scale)} scale</div>')
-            out.append(f'<tr><td valign="middle" style="padding:14px;border-bottom:1px solid #CFE3D8;font:15px/1.45 {SERIF};color:{INK}">{inl(l)}</td><td valign="middle" align="right" width="130" style="padding:14px 14px 14px 0;border-bottom:1px solid #CFE3D8">{right}</td></tr>')
+            out.append(f'<tr><td valign="top" style="padding:16px 16px 14px;border-bottom:1px solid #CFE3D8;font:15px/1.5 {SERIF};color:{INK}">{inl(l)}{meter}</td></tr>')
         out.append('</table>')
         for l in body:
             if l.startswith('> '): out.append(moreline(l))
