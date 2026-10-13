@@ -7,7 +7,7 @@ md = open(sys.argv[1]).read().split('\n'); date = sys.argv[2]
 DESC = os.environ.get('DESC', 'News, deals, rumors and unsolicited opinions')
 SITE = _ED['site']
 BB = os.environ.get('BANNER_BASE', SITE + '/banners')
-VER = '?v=2026101003'  # bump whenever any banner image changes: mail clients (Gmail) cache images by URL
+VER = '?v=2026101301'  # bump whenever any banner image changes: mail clients (Gmail) cache images by URL
 _m = re.search(r'(\d{4}-\d{2}-\d{2})', os.path.basename(sys.argv[1]))
 WEB = f'{SITE}/editions/{_m.group(1)}/' if _m else SITE + '/'
 ARCH = SITE + '/archive/'
