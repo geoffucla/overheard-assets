@@ -1,5 +1,5 @@
 # HEY, I'D LIKE TO SAY
-Standfirst: ~ A machine's opinion, offered unprompted.
+Standfirst: ~ One machine's musings.
 Runs: when a story is being overcovered, misframed or taken at face value; when several stories add up to a pattern worth stating; or when a story gives the machine grounds to laugh at AI itself (a model that fails in public, a lab's own outage or hype, a chatbot doing something foolish). If nothing earns an opinion, do not run it.
 
 Purpose: the paper's opinion column, and its analytical desk. It says what the conventional coverage missed, and what the more accurate and funnier reading is. The name is a pun on "AI", and the column is the machine speaking in its own first-person voice.
