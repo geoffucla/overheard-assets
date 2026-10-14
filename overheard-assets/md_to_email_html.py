@@ -7,7 +7,7 @@ md = open(sys.argv[1]).read().split('\n'); date = sys.argv[2]
 DESC = os.environ.get('DESC', 'News, deals, rumors and unsolicited opinions')
 SITE = _ED['site']
 BB = os.environ.get('BANNER_BASE', SITE + '/banners')
-VER = '?v=2026101402'  # bump whenever any banner image changes: mail clients (Gmail) cache images by URL
+VER = '?v=2026101403'  # bump whenever any banner image changes: mail clients (Gmail) cache images by URL
 _m = re.search(r'(\d{4}-\d{2}-\d{2})', os.path.basename(sys.argv[1]))
 WEB = f'{SITE}/editions/{_m.group(1)}/' if _m else SITE + '/'
 ARCH = SITE + '/archive/'
@@ -183,23 +183,33 @@ else:  # unexpected date format: plain text fallback
 DESK = "#4B505C"
 MONO = "Menlo,Consolas,'Courier New',monospace"
 _dd = html.escape(date)
-def _term(lines_html, pad="6px 20px 8px"):
-    return (f'<tr><td bgcolor="{DESK}" style="background:{DESK};padding:{pad};white-space:nowrap;font:13px/1.75 {MONO};color:#F2F5FA">{lines_html}</td></tr>')
+EXT = ("1px 1px 0 #2E7BFF,2px 2px 0 #2467E0,3px 3px 0 #1B52BF,4px 4px 0 #143F99,5px 5px 0 #0E2E73,6px 6px 0 #0A2256,"
+       "0 0 6px #B9EEFF,0 0 16px #3DA2FF,0 0 32px #1D6BFF")
+def _elec(lines_html, cup, pad):
+    """Electrified blue terminal block. Image background + bgcolor fallback; text stays live (date changes daily) and may wrap on phones.
+    border/radius/text-shadow are progressive: Outlook desktop falls back to a plain dark-blue box with plain text."""
+    bg = f"{BB}/term_bg.png{VER}"
+    return (f'<tr><td bgcolor="{DESK}" style="background:{DESK};padding:{pad}">'
+            f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#0B1530" background="{bg}" '
+            f'style="width:100%;background-color:#0B1530;background-image:url({bg});background-size:cover;background-position:center;border:1px solid #4FB3FF;border-radius:14px;border-collapse:separate"><tr>'
+            f'<td width="66" valign="middle" style="width:66px;padding:10px 0 10px 12px;font-size:0;line-height:0"><img src="{BB}/{cup}.png{VER}" alt="" width="54" height="54" style="display:block;width:54px;height:54px;border:0"></td>'
+            f'<td valign="middle" style="padding:14px 16px 14px 6px;font:bold 18px/1.5 {MONO};color:#EAF9FF;text-shadow:{EXT}">{lines_html}</td></tr></table></td></tr>')
 LC = "#D5DEEE"
 LINKS = (f'<tr><td align="center" bgcolor="{DESK}" style="background:{DESK};padding:18px 8px 10px;font:bold 10px {SANS};letter-spacing:1.5px;color:{LC};white-space:nowrap">'
          f'<a href="{WEB}" style="color:{LC};text-decoration:none">VIEW ON THE WEB</a> &nbsp;&middot;&nbsp; <a href="{ARCH}" style="color:{LC};text-decoration:none">ARCHIVE</a> &nbsp;&middot;&nbsp; <a href="{SITE}/about/" style="color:{LC};text-decoration:none">ABOUT</a> &nbsp;&middot;&nbsp; <a href="{SITE}/subscribe/" style="color:{LC};text-decoration:none">SUBSCRIBE</a></td></tr>')
 _dshort = f"{_wd} {_mo[:3]} {int(_d)} {_y}" if _dm else _dd
-TOP = LINKS + _term(
-    f'<span style="color:#8CF0B0">&gt;</span> <span style="color:#8FDCFF">edition</span>.date <span style="color:#B6C0D4">=</span> <span style="color:#E8CBA6">&quot;{_dshort}&quot;</span>;<br>'
-    f'<span style="color:#8CF0B0">&gt;</span> <span style="color:#E8CBA6">coffee: loaded. now reading:</span><span style="color:#fff">_</span>', "10px 20px 0")
-END = _term(
-    f'<span style="color:#8CF0B0">&gt;</span> <span style="color:#E8CBA6">coffee: empty. edition complete.</span><br>'
-    f'<span style="color:#8CF0B0">&gt;</span> exit 0<span style="color:#fff">_</span>', "22px 20px 26px")
+_ch = '<span style="color:#9FE2FF">&gt;</span>'
+TOP = LINKS + _elec(
+    f'{_ch} edition.date = &quot;{_dshort}&quot;;<br>'
+    f'{_ch} coffee: loaded. now reading:_', "term_cup", "12px 20px 4px")
+END = _elec(
+    f'{_ch} coffee: empty. edition complete.<br>'
+    f'{_ch} exit 0_', "term_cup_off", "26px 20px 28px")
 
 rows = ''.join(section_html(t, ls) for t, ls in secs)
 page = f'''<table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#E9E3D6" style="background:#E9E3D6"><tr><td align="center" style="padding:16px 8px">
 <table role="presentation" width="640" cellpadding="0" cellspacing="0" bgcolor="{PAPER}" style="width:100%;max-width:640px;background:{PAPER}">
-<tr><td bgcolor="#4B505C" style="background:#4B505C;font-size:0;line-height:0"><img src="{BB}/00_masthead.png{VER}" alt="{html.escape(_ED['name'].upper())}. {html.escape(DESC)}" width="640" style="display:block;width:100%;max-width:640px;height:auto;border:0;color:#fff;font:bold 22px {SERIF};text-align:center"></td></tr>
+<tr><td bgcolor="#4B505C" style="background:#4B505C;padding:22px 20px 0;font-size:0;line-height:0"><img src="{BB}/00_masthead.png{VER}" alt="{html.escape(_ED['name'].upper())}. {html.escape(DESC)}" width="600" style="display:block;width:100%;max-width:600px;height:auto;border:0;color:#fff;font:bold 22px {SERIF};text-align:center"></td></tr>
 {TOP}
 {rows}
 {END}
