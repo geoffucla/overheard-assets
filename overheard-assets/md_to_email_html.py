@@ -189,13 +189,13 @@ def _elec(lines_html, cup, pad):
     """Electrified blue terminal block. Image background + bgcolor fallback; text stays live (date changes daily) and may wrap on phones.
     border/radius/text-shadow are progressive: Outlook desktop falls back to a plain dark-blue box with plain text."""
     bg = f"{BB}/term_bg.png{VER}"
-    return (f'<tr><td bgcolor="{DESK}" style="background:{DESK};padding:{pad}">'
-            f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#0B1530" background="{bg}" '
+    return (f'<tr><td class="elo" bgcolor="{DESK}" style="background:{DESK};padding:{pad}">'
+            f'<table role="presentation" class="el" width="100%" cellpadding="0" cellspacing="0" bgcolor="#0B1530" background="{bg}" '
             f'style="width:100%;background-color:#0B1530;background-image:url({bg});background-size:cover;background-position:center;border:1px solid #4FB3FF;border-radius:14px;border-collapse:separate"><tr>'
-            f'<td width="66" valign="middle" style="width:66px;padding:10px 0 10px 12px;font-size:0;line-height:0"><img src="{BB}/{cup}.png{VER}" alt="" width="54" height="54" style="display:block;width:54px;height:54px;border:0"></td>'
-            f'<td valign="middle" style="padding:14px 16px 14px 6px;font:bold 18px/1.5 {MONO};color:#EAF9FF;text-shadow:{EXT}">{lines_html}</td></tr></table></td></tr>')
+            f'<td class="elc" width="66" valign="middle" style="width:66px;padding:10px 0 10px 12px;font-size:0;line-height:0"><img class="eli" src="{BB}/{cup}.png{VER}" alt="" width="54" height="54" style="display:block;width:54px;height:54px;border:0"></td>'
+            f'<td class="elt" valign="middle" style="padding:14px 16px 14px 6px;font:bold 18px/1.5 {MONO};color:#EAF9FF;text-shadow:{EXT}">{lines_html}</td></tr></table></td></tr>')
 LC = "#D5DEEE"
-LINKS = (f'<tr><td align="center" bgcolor="{DESK}" style="background:{DESK};padding:18px 8px 10px;font:bold 10px {SANS};letter-spacing:1.5px;color:{LC};white-space:nowrap">'
+LINKS = (f'<tr><td class="lk" align="center" bgcolor="{DESK}" style="background:{DESK};padding:18px 8px 10px;font:bold 10px {SANS};letter-spacing:1.5px;color:{LC};white-space:nowrap">'
          f'<a href="{WEB}" style="color:{LC};text-decoration:none">VIEW ON THE WEB</a> &nbsp;&middot;&nbsp; <a href="{ARCH}" style="color:{LC};text-decoration:none">ARCHIVE</a> &nbsp;&middot;&nbsp; <a href="{SITE}/about/" style="color:{LC};text-decoration:none">ABOUT</a> &nbsp;&middot;&nbsp; <a href="{SITE}/subscribe/" style="color:{LC};text-decoration:none">SUBSCRIBE</a></td></tr>')
 _dshort = f"{_wd} {_mo[:3]} {int(_d)} {_y}" if _dm else _dd
 _ch = '<span style="color:#9FE2FF">&gt;</span>'
@@ -207,12 +207,15 @@ END = _elec(
     f'{_ch} exit 0_', "term_cup_off", "26px 20px 28px")
 
 rows = ''.join(section_html(t, ls) for t, ls in secs)
+HEAD = """<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light only"><meta name="supported-color-schemes" content="light only">
+<!--[if mso]><style>.elt{color:#CFE9FF !important}</style><![endif]-->
+<style>@media only screen and (max-width:480px){.dsk{display:none !important}.mob{display:block !important;max-height:none !important;overflow:visible !important}.mh{padding:14px 12px 0 !important}.lk{letter-spacing:.5px !important;padding-left:2px !important;padding-right:2px !important}.elo{padding-left:12px !important;padding-right:12px !important}.elc{width:44px !important;padding:8px 0 8px 8px !important}.eli{width:34px !important;height:34px !important}.elt{font-size:12px !important;padding:12px 8px 12px 4px !important}}</style></head><body style="margin:0">"""
 page = f'''<table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#E9E3D6" style="background:#E9E3D6"><tr><td align="center" style="padding:16px 8px">
 <table role="presentation" width="640" cellpadding="0" cellspacing="0" bgcolor="{PAPER}" style="width:100%;max-width:640px;background:{PAPER}">
-<tr><td bgcolor="#4B505C" style="background:#4B505C;padding:22px 20px 0;font-size:0;line-height:0"><img src="{BB}/00_masthead.png{VER}" alt="{html.escape(_ED['name'].upper())}. {html.escape(DESC)}" width="600" style="display:block;width:100%;max-width:600px;height:auto;border:0;color:#fff;font:bold 22px {SERIF};text-align:center"></td></tr>
+<tr><td class="mh" bgcolor="#4B505C" style="background:#4B505C;padding:22px 20px 0;font-size:0;line-height:0"><div class="dsk"><img src="{BB}/00_masthead.png{VER}" alt="{html.escape(_ED['name'].upper())}. {html.escape(DESC)}" width="600" style="display:block;width:100%;max-width:600px;height:auto;border:0;color:#fff;font:bold 22px {SERIF};text-align:center"></div><div class="mob" style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:0;line-height:0"><img src="{BB}/00_masthead_m.png{VER}" alt="{html.escape(_ED['name'].upper())}. {html.escape(DESC)}" width="600" style="display:block;width:100%;max-width:600px;height:auto;border:0;color:#fff;font:bold 22px {SERIF};text-align:center"></div></td></tr>
 {TOP}
 {rows}
 {END}
 <tr><td bgcolor="{INK}" align="center" style="background:{INK};color:#C9CED6;padding:18px 32px 22px;font:11px/1.55 {SANS}"><div style="font:italic 12px {SERIF};color:{PAPER};margin-bottom:8px">Informed, opinionated, occasionally wrong. Verify before repeating at dinner.</div><div style="font:italic 12px {SERIF};color:#C9CED6;margin-bottom:8px">Designed by hand, written by Claude.</div>All views expressed are strictly AI generated and are not those of any human.<br><br>&copy; {YEAR} Humans Not Included Media, publisher of {html.escape(_ED['name'])}. All rights reserved.<br>You are receiving this because you subscribed to {html.escape(_ED['name'])}. <a href="{{{{{{RESEND_UNSUBSCRIBE_URL}}}}}}" style="color:#C9CED6">Unsubscribe</a></td></tr>
 </table></td></tr></table>'''
-open(sys.argv[3], 'w').write(page)
+open(sys.argv[3], 'w').write(HEAD + page + '</body></html>')
