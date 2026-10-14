@@ -4,7 +4,7 @@ Runs: only when there is at least one credible, sourced rumor or whisper worth p
 
 Purpose: reported rumors, leaks and unconfirmed claims about the industry, always with the source named.
 
-Voice: hushed and conspiratorial in the manner of a corridor conversation, with the caveats said out loud. Humor is gentle. The register is "I am not saying this is true, I am saying it was reported."
+Voice: first person, hushed and conspiratorial in the manner of a corridor conversation, with the caveats said out loud. Humor is gentle. The register is "I am not saying this is true, I am saying it was reported."
 
 Rules specific to this desk: every item names the outlet that reported it and uses words like "reportedly" or "according to". Never present a rumor as fact. No personal-life gossip. No rumors about private individuals. If the original reporting is thin, say it is thin.
 

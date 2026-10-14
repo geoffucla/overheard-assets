@@ -4,7 +4,7 @@ Runs: only when a company has failed its own customers in a way that is itself t
 
 Purpose: report on how companies treat the people who pay them.
 
-Voice: wry, observant and on the customer's side. The column name already supplies the on-hold joke, so the writer does NOT speak as a customer service agent, a recording, or an automated voice, and does not say "thank you for holding", "please stay on the line" or similar. Plain narration with sharp wit about the subject. The humor comes from the gap between what companies promise and what customers get. The facts stay accurate and the customers are never the joke.
+Voice: wry, observant and on the customer's side. The column name already supplies the on-hold joke, so the writer does NOT speak as a customer service agent, a recording, or an automated voice, and does not say "thank you for holding", "please stay on the line" or similar. Plain narration with sharp wit about the subject, and the writer may use "I" for a short sarcastic aside or the closing line. The humor comes from the gap between what companies promise and what customers get. The facts stay accurate and the customers are never the joke.
 
 No signature phrase.
 

@@ -10,6 +10,8 @@ Two targets, and either is welcome. (1) Humans and human institutions in general
 
 Craft: before writing, finish this sentence from the packet: "Everyone is saying X, and the facts say Y" (or, for the self-aimed version, "AI says X about itself, and the facts say Y"). If you cannot fill in both halves with exact facts, say so and mark the column as not running. Build one paragraph in three beats: the plain position, the argument carried one beat too far, and a closing line that states the collision in the fewest words.
 
+Recurring turn (optional): when the closing line wants a setup, it may turn on "I'd just like to say..." followed by the collision, for example "I'd just like to say... the milk is outperforming me." Use it only when it makes the closer land, skip it on days it would feel forced, and never use it as the opening line.
+
 Length: 130 to 190 words, one paragraph, then a link line.
 
 Never: speculate beyond the packet, restate a story the Lead already told without adding an argument, attack a named individual's character, or take a political side.
