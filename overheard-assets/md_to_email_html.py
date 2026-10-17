@@ -7,7 +7,7 @@ md = open(sys.argv[1]).read().split('\n'); date = sys.argv[2]
 DESC = os.environ.get('DESC', 'News, deals, rumors and unsolicited opinions')
 SITE = _ED['site']
 BB = os.environ.get('BANNER_BASE', SITE + '/banners')
-VER = '?v=2026101701'  # bump whenever any banner image changes: mail clients (Gmail) cache images by URL
+VER = '?v=2026101702'  # bump whenever any banner image changes: mail clients (Gmail) cache images by URL
 _m = re.search(r'(\d{4}-\d{2}-\d{2})', os.path.basename(sys.argv[1]))
 WEB = f'{SITE}/editions/{_m.group(1)}/' if _m else SITE + '/'
 ARCH = SITE + '/archive/'
@@ -15,11 +15,11 @@ YEAR = _m.group(1)[:4] if _m else str(_dt.date.today().year)
 INK = '#1B2430'; PAPER = '#F6F1E7'; MU = '#5C6573'; RED = '#B3261E'
 FAM = {'news': ('#1D4E92', '#E4E9F1'), 'money': ('#1F6B4F', '#E1EFE8'), 'machine': ('#5B3FA0', '#ECE6F6'), 'wit': ('#B34D12', '#F8E8DB')}
 COLS = {  # title -> (banner file, family)
- 'THE LEAD': ('b_01_lead', 'news'), 'THE LEDGER': ('b_02_ledger', 'money'), 'OPEN WEIGHTS': ('b_03_weights', 'money'),
- 'HUMAN, YOUR LOOP IS CALLING': ('b_04_human', 'machine'), 'THE SCUTTLEBUTT': ('b_05_scuttle', 'wit'), 'LOCAL DESK': ('b_06_local', 'news'),
- 'CORRECTIONS AND UPDATES': ('b_07_corr', 'news'), 'AUTOMATIC REPLIES': ('b_08_auto', 'machine'), "HEY, I'D LIKE TO SAY": ('b_09_synth', 'machine'),
- 'EMPATHY AS A SERVICE': ('b_10_empathy', 'machine'), 'YOUR CALL IS IMPORTANT TO US': ('b_11_call', 'wit'),
- 'UNSUITABLE FOR GENERAL RELEASE': ('b_12_unsuit', 'wit'), 'THREE THINGS TO BRING UP TODAY': ('b_13_three', 'wit'), 'TEXAS TEA': ('b_14_tea', 'news')}
+ 'THE LEAD': ('bar_01_lead', 'news'), 'THE LEDGER': ('bar_02_ledger', 'money'), 'OPEN WEIGHTS': ('bar_03_weights', 'money'),
+ 'HUMAN, YOUR LOOP IS CALLING': ('bar_04_human', 'machine'), 'THE SCUTTLEBUTT': ('bar_05_scuttle', 'wit'), 'LOCAL DESK': ('bar_06_local', 'news'),
+ 'CORRECTIONS AND UPDATES': ('bar_07_corr', 'news'), 'AUTOMATIC REPLIES': ('bar_08_auto', 'machine'), "HEY, I'D LIKE TO SAY": ('bar_09_synth', 'machine'),
+ 'EMPATHY AS A SERVICE': ('bar_10_empathy', 'machine'), 'YOUR CALL IS IMPORTANT TO US': ('bar_11_call', 'wit'),
+ 'UNSUITABLE FOR GENERAL RELEASE': ('bar_12_unsuit', 'wit'), 'THREE THINGS TO BRING UP TODAY': ('bar_13_three', 'wit'), 'TEXAS TEA': ('bar_14_tea', 'news')}
 SERIF = "Georgia,'Times New Roman',serif"; SANS = "Arial,Helvetica,sans-serif"
 
 def inl(t, link='#1D4ED8'):
