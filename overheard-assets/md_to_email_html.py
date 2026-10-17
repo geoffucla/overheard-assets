@@ -7,7 +7,7 @@ md = open(sys.argv[1]).read().split('\n'); date = sys.argv[2]
 DESC = os.environ.get('DESC', 'News, deals, rumors and unsolicited opinions')
 SITE = _ED['site']
 BB = os.environ.get('BANNER_BASE', SITE + '/banners')
-VER = '?v=2026101403'  # bump whenever any banner image changes: mail clients (Gmail) cache images by URL
+VER = '?v=2026101701'  # bump whenever any banner image changes: mail clients (Gmail) cache images by URL
 _m = re.search(r'(\d{4}-\d{2}-\d{2})', os.path.basename(sys.argv[1]))
 WEB = f'{SITE}/editions/{_m.group(1)}/' if _m else SITE + '/'
 ARCH = SITE + '/archive/'
@@ -15,11 +15,11 @@ YEAR = _m.group(1)[:4] if _m else str(_dt.date.today().year)
 INK = '#1B2430'; PAPER = '#F6F1E7'; MU = '#5C6573'; RED = '#B3261E'
 FAM = {'news': ('#1D4E92', '#E4E9F1'), 'money': ('#1F6B4F', '#E1EFE8'), 'machine': ('#5B3FA0', '#ECE6F6'), 'wit': ('#B34D12', '#F8E8DB')}
 COLS = {  # title -> (banner file, family)
- 'THE LEAD': ('01_lead', 'news'), 'THE LEDGER': ('02_ledger', 'money'), 'OPEN WEIGHTS': ('03_weights', 'money'),
- 'HUMAN, YOUR LOOP IS CALLING': ('04_human', 'machine'), 'THE SCUTTLEBUTT': ('05_scuttle', 'wit'), 'LOCAL DESK': ('06_local', 'news'),
- 'CORRECTIONS AND UPDATES': ('07_corr', 'news'), 'AUTOMATIC REPLIES': ('08_auto', 'machine'), "HEY, I'D LIKE TO SAY": ('09_synth', 'machine'),
- 'EMPATHY AS A SERVICE': ('10_empathy', 'machine'), 'YOUR CALL IS IMPORTANT TO US': ('11_call', 'wit'),
- 'UNSUITABLE FOR GENERAL RELEASE': ('12_unsuit', 'wit'), 'THREE THINGS TO BRING UP TODAY': ('13_three', 'wit'), 'TEXAS TEA': ('14_tea', 'news')}
+ 'THE LEAD': ('b_01_lead', 'news'), 'THE LEDGER': ('b_02_ledger', 'money'), 'OPEN WEIGHTS': ('b_03_weights', 'money'),
+ 'HUMAN, YOUR LOOP IS CALLING': ('b_04_human', 'machine'), 'THE SCUTTLEBUTT': ('b_05_scuttle', 'wit'), 'LOCAL DESK': ('b_06_local', 'news'),
+ 'CORRECTIONS AND UPDATES': ('b_07_corr', 'news'), 'AUTOMATIC REPLIES': ('b_08_auto', 'machine'), "HEY, I'D LIKE TO SAY": ('b_09_synth', 'machine'),
+ 'EMPATHY AS A SERVICE': ('b_10_empathy', 'machine'), 'YOUR CALL IS IMPORTANT TO US': ('b_11_call', 'wit'),
+ 'UNSUITABLE FOR GENERAL RELEASE': ('b_12_unsuit', 'wit'), 'THREE THINGS TO BRING UP TODAY': ('b_13_three', 'wit'), 'TEXAS TEA': ('b_14_tea', 'news')}
 SERIF = "Georgia,'Times New Roman',serif"; SANS = "Arial,Helvetica,sans-serif"
 
 def inl(t, link='#1D4ED8'):
@@ -151,71 +151,110 @@ def render_section(title, lines):
         for l in body: out.append(moreline(l) if l.startswith('> ') else para(l))
     return stand + ''.join(out)
 
+
+# ---------- rotating coffee line (one per edition, in order; 56 lines is about eleven weeks without a repeat) ----------
+COFFEE = [
+ "Strong opinions, medium roast.",
+ "Brewed overnight by software. Decaf unavailable.",
+ "No human touched this pot.",
+ "Best read before your second cup.",
+ "Contains caffeine and opinions. Verify the opinions.",
+ "Served hot. Facts checked while it cooled.",
+ "I cannot drink coffee, so I run on yours.",
+ "Ground at 4 a.m. by something that never sleeps.",
+ "Refills available tomorrow morning.",
+ "Please enjoy responsibly. Your first meeting is close.",
+ "Dark roast, light on adjectives.",
+ "Fresher than most of what you will hear in standup.",
+ "Grounds for discussion.",
+ "Espresso, in newsletter form.",
+ "Freshly percolated and mildly opinionated.",
+ "Your first meeting has no idea what is coming.",
+ "One lump of context, no sugar.",
+ "Cold brew takes twelve hours. This took less.",
+ "Mug not included.",
+ "The coffee is automatic and so are the opinions. The mug is yours.",
+ "Fueled by your coffee order and my confidence.",
+ "Grinding the news so you do not have to.",
+ "The only bitter thing here is supposed to be the coffee.",
+ "Steam rises. Valuations also.",
+ "Pour another. The Lead can wait ninety seconds.",
+ "A flat white with sharper edges.",
+ "Brewed with the filter on.",
+ "Decaf was considered and voted down.",
+ "Do not quote the machine before 9 a.m. Quote it after.",
+ "Pairs well with a croissant and mild skepticism.",
+ "Today's special is a hot take, lightly roasted.",
+ "A large context, no foam.",
+ "This is a pour-over, so please do not move the pot.",
+ "Allow four minutes for the coffee and six for the Scuttlebutt.",
+ "Hot coffee, hotter takes, lukewarm Ledger.",
+ "Your cup runneth over, and so does the funding.",
+ "Latte art provided by the Ledger's bar charts.",
+ "This pot serves one and has opinions about everything.",
+ "The beans are ethical and the takes are artisanal.",
+ "Medium roast, medium rare takes.",
+ "Extra foam on the Scuttlebutt, as always.",
+ "I stayed up so you could sleep in, and then you did not.",
+ "Single origin, multiple sources.",
+ "Steeped in context, filtered for relevance.",
+ "Pressed for time, pressed for you.",
+ "The creamer is optional and so is the clickbait.",
+ "Please let it cool before repeating at dinner.",
+ "A shot of news with room for doubt.",
+ "Warning, contents under pressure.",
+ "Made fresh. The opinions were already aged.",
+ "The first cup is for you. The second is for the Ledger.",
+ "Drip, drip, drip goes the news cycle.",
+ "One sugar, two skeptical eyebrows.",
+ "Hot enough to burn, cool enough to quote.",
+ "Strictly bean to inbox.",
+ "Caffeinated, cited and slightly overheated.",
+ "Today's pot was brewed with the verification setting on.",
+]
+def coffee_line(day):
+    """Pick by weekday count since 2026-01-05, so consecutive editions get consecutive lines."""
+    base = _dt.date(2026, 1, 5)
+    days = (day - base).days
+    n = (days // 7) * 5 + min(days % 7, 4)
+    return COFFEE[n % len(COFFEE)]
+_m2 = re.search(r'(\d{4})-(\d{2})-(\d{2})', os.path.basename(sys.argv[1]))
+_day = _dt.date(int(_m2.group(1)), int(_m2.group(2)), int(_m2.group(3))) if _m2 else _dt.date.today()
+JOKE = os.environ.get('COFFEE_LINE') or coffee_line(_day)
+
 def section_html(title, lines):
     info = COLS.get(title)
     fam = info[1] if info else 'news'; c, tint = FAM[fam]
     dark = title == 'HUMAN, YOUR LOOP IS CALLING'
     if not info:
-        return f'<tr><td style="padding:24px 28px 0;font:bold 12px {SANS};letter-spacing:2px;color:{RED}">{html.escape(title)}</td></tr><tr><td bgcolor="{PAPER}" style="background:{PAPER};padding:20px 28px 8px">{render_section(title, lines)}</td></tr>'
+        return f'<tr><td style="padding:24px 22px 0;font:bold 12px {SANS};letter-spacing:2px;color:{RED}">{html.escape(title)}</td></tr><tr><td bgcolor="#FCFAF5" style="background:#FCFAF5;padding:20px 22px 8px">{render_section(title, lines)}</td></tr>'
     bg = '#2A1F4A' if dark else '#FCFAF5'
-    head = (f'<tr><td bgcolor="{DESK}" style="background:{DESK};padding:22px 20px 0;font-size:0;line-height:0">'
-            f'<img src="{BB}/{info[0]}.png{VER}" alt="{html.escape(title)}" width="600" style="display:block;width:100%;max-width:600px;height:auto;border:0;color:{c};font:bold 16px {SANS};text-align:center"></td></tr>')
-    body = (f'<tr><td bgcolor="{DESK}" style="background:{DESK};padding:0 20px 0">'
-            f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-left:7px solid {c};border-right:7px solid {c};background:{bg}"><tr><td bgcolor="{bg}" style="background:{bg};padding:20px 20px 8px">{render_section(title, lines)}</td></tr></table>'
-            f'<img src="{BB}/foot_{info[0]}.png{VER}" alt="" width="600" style="display:block;width:100%;max-width:600px;height:auto;border:0"></td></tr>')
+    head = (f'<tr><td bgcolor="{PAPER}" style="background:{PAPER};padding:18px 0 0;font-size:0;line-height:0">'
+            f'<img src="{BB}/{info[0]}.png{VER}" alt="{html.escape(title)}" width="640" style="display:block;width:100%;max-width:640px;height:auto;border:0;color:{c};font:bold 16px {SANS};text-align:center"></td></tr>')
+    body = (f'<tr><td class="cp" bgcolor="{bg}" style="background:{bg};padding:20px 22px 10px">{render_section(title, lines)}</td></tr>')
     return head + body
 
-_dm = re.match(r'\s*(\w+),\s*(\w+)\s+(\d+),\s*(\d{4})', date)
-TAGALT = 'Your secret to being clued in and quotable before your first meeting.'
-LABEL = (f'<div style="display:inline-block;vertical-align:middle;width:100%;max-width:387px;margin:6px 0;font-size:0;line-height:0">'
-         f'<img src="{BB}/00_tagline.png{VER}" alt="{TAGALT}" width="387" style="display:block;width:100%;max-width:387px;height:auto;border:0;color:{INK};font:italic 15px/1.4 {SERIF};text-align:center"></div>')
-if _dm:
-    _wd, _mo, _d, _y = _dm.groups()
-    TILE = (f'<div style="display:inline-block;vertical-align:middle;margin:6px 8px;font-size:14px;line-height:normal">'
-            f'<table role="presentation" width="108" cellpadding="0" cellspacing="0" style="width:108px;border:1px solid #8A6238;border-radius:8px;border-collapse:separate;overflow:hidden;box-shadow:0 6px 10px rgba(60,40,20,.32)">'
-            f'<tr><td align="center" bgcolor="{RED}" style="background:{RED};color:#ffffff;font:bold 11px {SANS};letter-spacing:3px;padding:6px 0">{html.escape(_mo.upper())}</td></tr>'
-            f'<tr><td align="center" bgcolor="#FBF1DA" style="background:#FBF1DA;padding:6px 0 8px"><div style="font:bold 44px/1 {SERIF};color:{INK}">{int(_d)}</div>'
-            f'<div style="font:bold 10px {SANS};letter-spacing:3px;color:{MU};padding-top:4px">{html.escape(_wd.upper())}</div>'
-            f'<div style="font:10px {SANS};letter-spacing:2px;color:{MU};padding-top:2px">{_y}</div></td></tr></table></div>')
-else:  # unexpected date format: plain text fallback
-    TILE = f'<div style="display:block;text-align:center;margin:6px 0;font:bold 11px {SANS};letter-spacing:3px;color:{MU}">{html.escape(date.upper())}</div>'
-# Hybrid layout, no media queries needed: tile and label sit side by side when the width allows and stack on narrow screens. MSO tables keep Outlook desktop side by side.
-DESK = "#4B505C"
-MONO = "Menlo,Consolas,'Courier New',monospace"
-_dd = html.escape(date)
-EXT = ("1px 1px 0 #2E7BFF,2px 2px 0 #2467E0,3px 3px 0 #1B52BF,4px 4px 0 #143F99,5px 5px 0 #0E2E73,6px 6px 0 #0A2256,"
-       "0 0 6px #B9EEFF,0 0 16px #3DA2FF,0 0 32px #1D6BFF")
-def _elec(lines_html, cup, pad):
-    """Electrified blue terminal block. Image background + bgcolor fallback; text stays live (date changes daily) and may wrap on phones.
-    border/radius/text-shadow are progressive: Outlook desktop falls back to a plain dark-blue box with plain text."""
-    bg = f"{BB}/term_bg.png{VER}"
-    return (f'<tr><td class="elo" bgcolor="{DESK}" style="background:{DESK};padding:{pad}">'
-            f'<table role="presentation" class="el" width="100%" cellpadding="0" cellspacing="0" bgcolor="#0B1530" background="{bg}" '
-            f'style="width:100%;background-color:#0B1530;background-image:url({bg});background-size:cover;background-position:center;border:1px solid #4FB3FF;border-radius:14px;border-collapse:separate"><tr>'
-            f'<td class="elc" width="66" valign="middle" style="width:66px;padding:10px 0 10px 12px;font-size:0;line-height:0"><img class="eli" src="{BB}/{cup}.png{VER}" alt="" width="54" height="54" style="display:block;width:54px;height:54px;border:0"></td>'
-            f'<td class="elt" valign="middle" style="padding:14px 16px 14px 6px;font:bold 18px/1.5 {MONO};color:#EAF9FF;text-shadow:{EXT}">{lines_html}</td></tr></table></td></tr>')
-LC = "#D5DEEE"
-LINKS = (f'<tr><td class="lk" align="center" bgcolor="{DESK}" style="background:{DESK};padding:18px 8px 10px;font:bold 10px {SANS};letter-spacing:1.5px;color:{LC};white-space:nowrap">'
-         f'<a href="{WEB}" style="color:{LC};text-decoration:none">VIEW ON THE WEB</a> &nbsp;&middot;&nbsp; <a href="{ARCH}" style="color:{LC};text-decoration:none">ARCHIVE</a> &nbsp;&middot;&nbsp; <a href="{SITE}/about/" style="color:{LC};text-decoration:none">ABOUT</a> &nbsp;&middot;&nbsp; <a href="{SITE}/subscribe/" style="color:{LC};text-decoration:none">SUBSCRIBE</a></td></tr>')
-_dshort = f"{_wd} {_mo[:3]} {int(_d)} {_y}" if _dm else _dd
-_ch = '<span style="color:#9FE2FF">&gt;</span>'
-TOP = LINKS + _elec(
-    f'{_ch} edition.date = &quot;{_dshort}&quot;;<br>'
-    f'{_ch} coffee: loaded. now reading:_', "term_cup", "12px 20px 4px")
-END = _elec(
-    f'{_ch} coffee: empty. edition complete.<br>'
-    f'{_ch} exit 0_', "term_cup_off", "26px 20px 28px")
+_dd = html.escape(date.upper())
+LC = "#1D4E92"; SEP = "#9AA3B2"
+_LK = [('VIEW ON THE WEB', WEB), ('ARCHIVE', ARCH), ('ABOUT', SITE + '/about/'), ('SUBSCRIBE', SITE + '/subscribe/')]
+LINKS = f'<span style="color:{SEP}">&nbsp;&middot;&nbsp;</span>'.join(f' <a href="{u}" style="color:{LC};text-decoration:none">{t}</a> ' for t, u in _LK)
+ALT = f"{html.escape(_ED['name'].upper())}. {html.escape(DESC)}"
+MAST = (f'<tr><td class="mh" bgcolor="{PAPER}" style="background:{PAPER};padding:18px 20px 0;font-size:0;line-height:0"><div class="dsk"><img src="{BB}/00_masthead.png{VER}" alt="{ALT}" width="600" style="display:block;width:100%;max-width:600px;height:auto;border:0;color:{INK};font:bold 22px {SERIF};text-align:center"></div>'
+        f'<div class="mob" style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:0;line-height:0"><img src="{BB}/00_masthead_m.png{VER}" alt="{ALT}" width="600" style="display:block;width:100%;max-width:600px;height:auto;border:0;color:{INK};font:bold 22px {SERIF};text-align:center"></div></td></tr>')
+DATELINE = (f'<tr><td class="dlo" bgcolor="{PAPER}" style="background:{PAPER};padding:12px 22px 0"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:3px double {INK};border-bottom:1px solid {INK}"><tr>'
+            f'<td class="dl" style="padding:9px 0;font:bold 11px {SANS};letter-spacing:2px;color:{INK}">{_dd}</td>'
+            f'<td class="lkr" align="right" style="padding:9px 0;font:bold 10px {SANS};letter-spacing:1.5px;white-space:nowrap">{LINKS}</td></tr></table>'
+            f'<div style="text-align:center;font:italic 14px/1.4 {SERIF};color:{MU};padding:8px 0 2px"><img src="{BB}/cup_ink.png{VER}" width="18" height="18" alt="" style="vertical-align:-4px;border:0;margin-right:6px">{html.escape(JOKE)}</div></td></tr>')
 
 rows = ''.join(section_html(t, ls) for t, ls in secs)
 HEAD = """<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light only"><meta name="supported-color-schemes" content="light only">
-<!--[if mso]><style>.elt{color:#CFE9FF !important}</style><![endif]-->
-<style>@media only screen and (max-width:480px){.dsk{display:none !important}.mob{display:block !important;max-height:none !important;overflow:visible !important}.mh{padding:14px 12px 0 !important}.lk{letter-spacing:.5px !important;padding-left:2px !important;padding-right:2px !important}.elo{padding-left:12px !important;padding-right:12px !important}.elc{width:44px !important;padding:8px 0 8px 8px !important}.eli{width:34px !important;height:34px !important}.elt{font-size:10.5px !important;white-space:nowrap !important;padding:12px 6px 12px 4px !important}}</style></head><body style="margin:0">"""
-page = f'''<table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#E9E3D6" style="background:#E9E3D6"><tr><td align="center" style="padding:16px 8px">
+<style>@media only screen and (max-width:480px){.op{padding:0 !important}.dsk{display:none !important}.mob{display:block !important;max-height:none !important;overflow:visible !important}.mh{padding:12px 10px 0 !important}.dlo{padding:10px 16px 0 !important}.dl{display:block !important;text-align:center !important;padding:9px 0 2px !important}.lkr{display:block !important;text-align:center !important;padding:2px 0 9px !important;font-size:9px !important;letter-spacing:.5px !important}.cp{padding-left:16px !important;padding-right:16px !important}}</style></head><body style="margin:0">"""
+page = f'''<table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#E9E3D6" style="background:#E9E3D6"><tr><td class="op" align="center" style="padding:16px 8px">
 <table role="presentation" width="640" cellpadding="0" cellspacing="0" bgcolor="{PAPER}" style="width:100%;max-width:640px;background:{PAPER}">
-<tr><td class="mh" bgcolor="#4B505C" style="background:#4B505C;padding:22px 20px 0;font-size:0;line-height:0"><div class="dsk"><img src="{BB}/00_masthead.png{VER}" alt="{html.escape(_ED['name'].upper())}. {html.escape(DESC)}" width="600" style="display:block;width:100%;max-width:600px;height:auto;border:0;color:#fff;font:bold 22px {SERIF};text-align:center"></div><div class="mob" style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:0;line-height:0"><img src="{BB}/00_masthead_m.png{VER}" alt="{html.escape(_ED['name'].upper())}. {html.escape(DESC)}" width="600" style="display:block;width:100%;max-width:600px;height:auto;border:0;color:#fff;font:bold 22px {SERIF};text-align:center"></div></td></tr>
-{TOP}
+{MAST}
+{DATELINE}
 {rows}
-{END}
+<tr><td bgcolor="{PAPER}" style="background:{PAPER};font-size:0;line-height:0;height:18px">&nbsp;</td></tr>
 <tr><td bgcolor="{INK}" align="center" style="background:{INK};color:#C9CED6;padding:18px 32px 22px;font:11px/1.55 {SANS}"><div style="font:italic 12px {SERIF};color:{PAPER};margin-bottom:8px">Informed, opinionated, occasionally wrong. Verify before repeating at dinner.</div><div style="font:italic 12px {SERIF};color:#C9CED6;margin-bottom:8px">Designed by hand, written by Claude.</div>All views expressed are strictly AI generated and are not those of any human.<br><br>&copy; {YEAR} Humans Not Included Media, publisher of {html.escape(_ED['name'])}. All rights reserved.<br>You are receiving this because you subscribed to {html.escape(_ED['name'])}. <a href="{{{{{{RESEND_UNSUBSCRIBE_URL}}}}}}" style="color:#C9CED6">Unsubscribe</a></td></tr>
 </table></td></tr></table>'''
 open(sys.argv[3], 'w').write(HEAD + page + '</body></html>')
