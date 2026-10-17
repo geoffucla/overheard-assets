@@ -7,7 +7,7 @@ md = open(sys.argv[1]).read().split('\n'); date = sys.argv[2]
 DESC = os.environ.get('DESC', 'News, deals, rumors and unsolicited opinions')
 SITE = _ED['site']
 BB = os.environ.get('BANNER_BASE', SITE + '/banners')
-VER = '?v=2026101702'  # bump whenever any banner image changes: mail clients (Gmail) cache images by URL
+VER = '?v=2026101703'  # bump whenever any banner image changes: mail clients (Gmail) cache images by URL
 _m = re.search(r'(\d{4}-\d{2}-\d{2})', os.path.basename(sys.argv[1]))
 WEB = f'{SITE}/editions/{_m.group(1)}/' if _m else SITE + '/'
 ARCH = SITE + '/archive/'
@@ -144,7 +144,16 @@ def render_section(title, lines):
             out.append(moreline(l) if l.startswith('> ') else f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 14px"><tr><td width="4" bgcolor="{c}" style="width:4px;background:{c}">&nbsp;</td><td style="padding-left:14px;font:15.5px/1.55 {SERIF};color:{INK}">{inl(l)}</td></tr></table>')
     elif title == 'UNSUITABLE FOR GENERAL RELEASE':
         t = [l for l in body if not l.startswith('> ')]
-        out.append(f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid {INK};background:#fff;margin:0 0 16px"><tr><td style="padding:16px 18px">' + ''.join(f'<div style="font:15.5px/1.55 {SERIF};color:{INK};margin:0 0 10px">{inl(l)}</div>' for l in t) + '</td></tr></table>')
+        UA = os.environ.get('UACC', '#6B1D24'); UT = os.environ.get('UTINT', '#F5ECE3'); UL = os.environ.get('ULINE', '#E3D2C3')
+        paras = []
+        for i, l in enumerate(t):
+            if i == 0 and l and l[0].isalpha():
+                first, rest = l[0], l[1:]
+                cap = f'<span style="float:left;font:italic bold 66px/52px {SERIF};color:{UA};padding:6px 10px 0 0">{first}</span>'
+                paras.append(f'<div style="font:15.5px/1.55 {SERIF};color:{INK};margin:0 0 10px">{cap}{inl(rest)}</div>')
+            else:
+                paras.append(f'<div style="font:15.5px/1.55 {SERIF};color:{INK};margin:0 0 10px">{inl(l)}</div>')
+        out.append(f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 16px"><tr><td bgcolor="{UT}" style="background:{UT};border-top:1px solid {UL};border-bottom:1px solid {UL};padding:18px 20px 8px">' + ''.join(paras) + '</td></tr></table>')
         for l in body:
             if l.startswith('> '): out.append(moreline(l))
     else:  # LOCAL DESK and anything else
@@ -243,13 +252,13 @@ MAST = (f'<tr><td class="mh" bgcolor="{PAPER}" style="background:{PAPER};padding
         f'<div class="mob" style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:0;line-height:0"><img src="{BB}/00_masthead_m.png{VER}" alt="{ALT}" width="600" style="display:block;width:100%;max-width:600px;height:auto;border:0;color:{INK};font:bold 22px {SERIF};text-align:center"></div></td></tr>')
 DATELINE = (f'<tr><td class="dlo" bgcolor="{PAPER}" style="background:{PAPER};padding:12px 22px 0"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:3px double {INK};border-bottom:1px solid {INK}"><tr>'
             f'<td class="dl" style="padding:9px 0;font:bold 11px {SANS};letter-spacing:2px;color:{INK}">{_dd}</td>'
-            f'<td class="lkr" align="right" style="padding:9px 0;font:bold 10px {SANS};letter-spacing:1.5px;white-space:nowrap">{LINKS}</td></tr></table>'
+            f'<td class="lkr" align="right" style="padding:9px 0;font:bold 10px {SANS};letter-spacing:1.5px">{LINKS}</td></tr></table>'
             f'<div style="text-align:center;font:italic 14px/1.4 {SERIF};color:{MU};padding:8px 0 2px"><img src="{BB}/cup_ink.png{VER}" width="18" height="18" alt="" style="vertical-align:-4px;border:0;margin-right:6px">{html.escape(JOKE)}</div></td></tr>')
 
 rows = ''.join(section_html(t, ls) for t, ls in secs)
 HEAD = """<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light only"><meta name="supported-color-schemes" content="light only">
 <style>@media only screen and (max-width:480px){.op{padding:0 !important}.dsk{display:none !important}.mob{display:block !important;max-height:none !important;overflow:visible !important}.mh{padding:12px 10px 0 !important}.dlo{padding:10px 16px 0 !important}.dl{display:block !important;text-align:center !important;padding:9px 0 2px !important}.lkr{display:block !important;text-align:center !important;padding:2px 0 9px !important;font-size:9px !important;letter-spacing:.5px !important}.cp{padding-left:16px !important;padding-right:16px !important}}</style></head><body style="margin:0">"""
-page = f'''<table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#E9E3D6" style="background:#E9E3D6"><tr><td class="op" align="center" style="padding:16px 8px">
+page = f'''<table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#E9E3D6" style="background:#E9E3D6"><tr><td class="op" align="center" style="padding:16px 0">
 <table role="presentation" width="640" cellpadding="0" cellspacing="0" bgcolor="{PAPER}" style="width:100%;max-width:640px;background:{PAPER}">
 {MAST}
 {DATELINE}
