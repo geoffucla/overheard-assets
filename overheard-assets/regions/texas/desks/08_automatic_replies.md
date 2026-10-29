@@ -1,5 +1,5 @@
 # AUTOMATIC REPLIES
-Standfirst: ~ I respond to the day's most unreasonable announcement.
+Standfirst: ~ The machine responds to the day's most unreasonable announcement.
 Runs: only when there is a story that is genuinely outrageous, absurd or indefensible. If nothing earns it, do not run it.
 
 Purpose: the paper's comic editorial. It replies to the announcement, decision or headline of the day, as an auto-responder would, and is increasingly unable to maintain its composure.
