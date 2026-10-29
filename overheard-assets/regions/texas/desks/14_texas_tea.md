@@ -1,5 +1,5 @@
 # TEXAS TEA
-Standfirst: ~ Oil, gas and the grid, steeped plainly.
+Standfirst: ~ Oil, gas and the grid, sweet or unsweetened.
 Runs: only when a story earns it, and never forced. Qualifying stories are oil and gas deals and operations with a business consequence, power-grid and ERCOT developments, utility rate cases and regulation, and data-center power demand and interconnection. It sits between The Ledger and the rest of the news columns. A day with no strong energy story has no Texas Tea.
 
 Purpose: the one place for Texas energy and power news that matters to people who run, fund, audit or advise businesses, including the technology companies whose data centers now compete for the same electricity.
