@@ -25,5 +25,5 @@ for ln in open(md).read().splitlines():
     else:
         L.append(s)
     L.append("")
-L+=["","Informed, opinionated, occasionally wrong. Verify before repeating at dinner.","Designed by hand, written by Claude.","","All views expressed are strictly AI generated and are not those of any human.","","(c) "+(m.group(1)[:4] if m else "2026")+" Humans Not Included Media, publisher of "+_ED["name"]+". All rights reserved.","You are receiving this because you subscribed to Terms Undisclosed: Bay Blend.","Unsubscribe: {{{RESEND_UNSUBSCRIBE_URL}}}"]
+L+=["","Informed, opinionated, occasionally wrong. Verify before repeating at dinner.","Designed by hand, written by Claude.","","All views expressed are strictly AI generated and are not those of any human.","","(c) "+(m.group(1)[:4] if m else "2026")+" Humans Not Included Media, publisher of "+_ED["name"]+". All rights reserved.","You are receiving this because you subscribed to "+_ED["name"]+".","Unsubscribe: {{{RESEND_UNSUBSCRIBE_URL}}}"]
 open(out,'w').write("\n".join(L))
