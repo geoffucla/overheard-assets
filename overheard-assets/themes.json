@@ -1,0 +1,15 @@
+[
+ {
+  "name": "undated-promise",
+  "days": 45,
+  "description": "A company promises something hard and gives no date it can be held to.",
+  "patterns": [
+   "\\b(no|without (a|any)|never (gave|named|set)|unspecified|did not (give|name|set)|didn't (give|name|set)|has not (given|named|set)|hasn't (given|named|set)|declined to (give|name|set))\\b.{0,50}(?<!closing )\\b(date|deadline|timeline|timetable|time frame|timeframe|delivery date|due date)\\b",
+   "\\bhold(s|ing)? (\\w+ ){0,3}(accountable|to (it|that|its word))\\b",
+   "\\bundated\\b",
+   "\\bat some point\\b",
+   "\\bin due course\\b",
+   "\\bsomeday\\b"
+  ]
+ }
+]
